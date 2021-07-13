@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 export default {
   name: 'AppAuth',
@@ -146,9 +146,8 @@ export default {
   },
 
   computed: {
-    isAuthModalVisible() {
-      return this.$store.getters.isAuthModalVisible;
-    },
+    ...mapState(['isAuthModalVisible']),
+
     modalHiddenClass() {
       return { hidden: !this.isAuthModalVisible };
     },

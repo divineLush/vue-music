@@ -9,11 +9,4 @@ export default createStore({
       state.isAuthModalVisible = !state.isAuthModalVisible;
     },
   },
-  getters: {
-    isAuthModalVisible: (state) => state.isAuthModalVisible,
-  },
-  actions: {
-  },
-  modules: {
-  },
 });
