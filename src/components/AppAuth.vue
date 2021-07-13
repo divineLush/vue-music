@@ -147,6 +147,8 @@ export default {
 
   computed: {
     ...mapState(['isAuthModalVisible']),
+    // using alias
+    // ...mapState({ modal: 'isAuthModalVisible' }),
 
     modalHiddenClass() {
       return { hidden: !this.isAuthModalVisible };
