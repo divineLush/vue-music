@@ -89,6 +89,7 @@
           <vee-form
             v-if="tab === 'register'"
             :validation-schema="schema"
+            :initial-values="userData"
             @submit="register"
           >
             <!-- Name -->
@@ -120,10 +121,28 @@
             <!-- Password -->
             <div class="mb-3">
               <label class="inline-block mb-2">Password</label>
-              <vee-field type="password" name="password"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition
-                  duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Password" />
+              <vee-field
+                type="password"
+                name="password"
+                :bails="false"
+                v-slot="{ field, errors }"
+              >
+                <input
+                  class="block w-full py-1.5 px-3 text-gray-800 border
+                    border-gray-300 transition duration-500
+                    focus:outline-none focus:border-black rounded"
+                  placeholder="Password"
+                  type="password"
+                  v-bind="field"
+                >
+                <div class="text-red-600" v-for="error in errors" :key="error">
+                  {{ error }}
+                </div>
+              </vee-field>
+              <!-- :bails="false" will tell the vee-field component
+                not to use the fast exit strategy -->
+              <!-- this means every rule will checked even if
+                the previous rule was broken -->
               <ErrorMessage class="text-red-600" name="password" />
             </div>
             <!-- Confirm Password -->
@@ -187,9 +206,12 @@ export default {
         age: 'required|min_value:18|max_value:120',
         password: 'required|min:3|max:100',
         // @password must match a name we're checking against
-        confirm_password: 'confirmed:@password',
-        country: 'required|excluded:Imaginationland',
-        tos: 'required',
+        confirm_password: 'passwords_mismatch:@password',
+        country: 'required|country_excluded:Imaginationland',
+        tos: 'tos',
+      },
+      userData: {
+        country: 'USA',
       },
     };
   },
