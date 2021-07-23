@@ -85,6 +85,13 @@
             </button>
           </form>
           <!-- Registration Form -->
+          <div
+            v-if="isRegShowAlert"
+            class="text-white text-center font-bold p-5 mb-4"
+            :class="regAlertVariant"
+          >
+            {{ regAlertMsg }}
+          </div>
           <!-- validation-schema attribute allows to outsource the rules into an object -->
           <vee-form
             v-if="tab === 'register'"
@@ -179,9 +186,12 @@
               <label class="inline-block">Accept terms of service</label>
               <ErrorMessage class="text-red-600" name="tos" />
             </div>
-            <button type="submit"
-              class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition
-                hover:bg-purple-700">
+            <button
+              type="submit"
+              class="block w-full bg-purple-600 text-white py-1.5
+                px-3 rounded transition hover:bg-purple-700"
+              :disabled="isRegInSubmission"
+            >
               Submit
             </button>
           </vee-form>
@@ -213,12 +223,23 @@ export default {
       userData: {
         country: 'USA',
       },
+      isRegInSubmission: false,
+      isRegShowAlert: false,
+      regAlertVariant: 'bg-blue-500', // tailwing class
+      regAlertMsg: 'Please wait! Your account is being created.',
     };
   },
 
   methods: {
     ...mapMutations(['toggleAuthModal']),
     register(values) {
+      this.isRegShowAlert = true;
+      this.isRegInSubmission = true;
+      this.regAlertVariant = 'bg-blue-500';
+      this.regAlertMsg = 'Please wait! Your account is being created.';
+
+      this.regAlertVariant = 'bg-green-500';
+      this.regAlertMsg = 'Success! Your account has been created.';
       console.log(values);
     },
   },
