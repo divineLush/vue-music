@@ -62,6 +62,11 @@ export default {
           ? messages[rule.name]
           : `The field ${field} is invalid`;
       },
+      validateOnBlur: true,
+      validateOnChange: true,
+      validateOnInput: false,
+      // validate the input whenever the value changes internally through v-model
+      validateOnModelUpdate: true,
     });
   },
 };
