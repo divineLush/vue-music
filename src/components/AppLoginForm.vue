@@ -73,6 +73,8 @@ export default {
 
       this.logAlertVariant = 'bg-green-500';
       this.logAlertMsg = 'Success! We are now logged in.';
+
+      window.location.reload();
     },
   },
 };
