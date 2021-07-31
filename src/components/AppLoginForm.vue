@@ -54,18 +54,26 @@ export default {
   },
 
   methods: {
-    login(values) {
+    //  values are provided by the vee-form component
+    async login(values) {
       console.log(values);
       this.isLogInSubmission = true;
       this.isLogShowAlert = true;
       this.logAlertVariant = 'bg-blue-500';
       this.logAlertMsg = 'Please wait! We are logging you in.';
 
+      try {
+        await this.$store.dispatch('login', values);
+      } catch (err) {
+        this.isLogInSubmission = false;
+        this.logAlertVariant = 'bg-red-500';
+        this.logAlertMsg = 'Invalid login details.';
+        return;
+      }
+
+      this.logAlertVariant = 'bg-green-500';
       this.logAlertMsg = 'Success! We are now logged in.';
     },
   },
 };
 </script>
-
-<style lang="css">
-</style>
