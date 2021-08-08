@@ -2,9 +2,10 @@
   <header id="header" class="bg-gray-700">
     <nav class="container mx-auto flex justify-start items-center py-5 px-4">
       <!-- App Name -->
+      <!-- using route name as path as names are more scalable -->
       <router-link
         class="text-white font-bold uppercase text-2xl mr-4"
-        to="/"
+        :to="{ name: 'home' }"
         exact-active-class="no-active"
       >
         Music
@@ -14,15 +15,6 @@
         <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1">
           <!-- Navigation Links -->
-          <li>
-            <router-link
-              v-if="isUserLoggedIn"
-              class="px-2 text-white"
-              to="/manage"
-            >
-              Manage
-            </router-link>
-          </li>
           <li v-if="!isUserLoggedIn">
             <a
               class="px-2 text-white"
@@ -34,7 +26,7 @@
           </li>
           <template v-else>
             <li>
-              <router-link class="px-2 text-white" to="#">Manage</router-link>
+              <router-link class="px-2 text-white" :to="{ name: 'manage' }">Manage</router-link>
             </li>
             <li>
               <a
