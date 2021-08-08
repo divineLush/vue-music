@@ -19,6 +19,16 @@ const routes = [
     path: '/manage',
     component: Manage,
   },
+  {
+    path: '/manage-music',
+    // same object passed inside router-links
+    redirect: { name: 'manage' },
+  },
+  {
+    // using regex to redirect users to home in case of 404
+    path: '/:catchAll(.*)*',
+    redirect: { name: 'home' },
+  },
 ];
 
 const router = createRouter({
