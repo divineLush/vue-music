@@ -21,6 +21,12 @@ const routes = [
     // alias: '/manage-music',
     path: '/manage',
     component: Manage,
+    // ROUTE SPECIFIC GUARD
+    // beforeEnter: (to, from, next) => {
+    //   console.log('/manage route guard', to, from);
+
+    //   next();
+    // },
   },
   {
     path: '/manage-music',
@@ -43,5 +49,19 @@ const router = createRouter({
   routes,
   linkExactActiveClass: 'text-yellow-500',
 });
+
+// GLOBAL GUARD
+// beforeEach() is available after the instance ot the router is created
+// allows to run a function before every request
+// to is an oobject that containts information where the user is navigating to
+// from is vice versa
+// next is a function
+// router won't render the component until next() is called
+
+// router.beforeEach((to, from, next) => {
+//   console.log('Global Guard', to, from);
+
+//   next();
+// });
 
 export default router;

@@ -128,3 +128,24 @@
     </div>
   </section>
 </template>
+
+<script>
+import store from '@/store/index';
+
+export default {
+  name: 'manage',
+
+  // router runs this method before rendering the component
+  // has access to to, from, next as other guards
+  // doesn't have access to the methods and properties of a component
+  beforeRouteEnter(to, from, next) {
+    console.log('Manage component guard', to, from, store.state);
+
+    if (store.state.isUserLoggedIn) {
+      next();
+    } else {
+      next({ name: 'home' });
+    }
+  },
+};
+</script>

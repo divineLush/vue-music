@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState, mapActions } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 export default {
   name: 'AppHeader',
@@ -54,7 +54,13 @@ export default {
 
   methods: {
     ...mapMutations(['toggleAuthModal']),
-    ...mapActions(['signOut']),
+    signOut() {
+      this.$store.dispatch('signOut');
+
+      if (this.$route.name === 'manage') {
+        this.$router.push({ name: 'home' });
+      }
+    },
   },
 };
 </script>
