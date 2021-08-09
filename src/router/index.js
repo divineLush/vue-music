@@ -16,12 +16,15 @@ const routes = [
   },
   {
     name: 'manage',
+    // an alias is an additional path that renders the same component
+    // allows a component to be rendered for a different path
+    // alias: '/manage-music',
     path: '/manage',
     component: Manage,
   },
   {
     path: '/manage-music',
-    // same object passed inside router-links
+    // better use redirects for new routes rather then aliases for SEO reasons
     redirect: { name: 'manage' },
   },
   {
