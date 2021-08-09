@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import About from '@/views/About.vue';
 import Manage from '@/views/Manage.vue';
+import store from '@/store/index';
 
 const routes = [
   {
@@ -20,6 +21,9 @@ const routes = [
     // allows a component to be rendered for a different path
     // alias: '/manage-music',
     path: '/manage',
+    meta: {
+      requiresAuth: true,
+    },
     component: Manage,
     // ROUTE SPECIFIC GUARD
     // beforeEnter: (to, from, next) => {
@@ -57,11 +61,20 @@ const router = createRouter({
 // from is vice versa
 // next is a function
 // router won't render the component until next() is called
+router.beforeEach((to, from, next) => {
+  console.log('Global Guard', to, from);
 
-// router.beforeEach((to, from, next) => {
-//   console.log('Global Guard', to, from);
+  const isAuthRequired = to.matched
+    .some((record) => record.meta.requiresAuth);
 
-//   next();
-// });
+  const isLoggedIn = store.state.isUserLoggedIn;
+
+  if (isAuthRequired && !isLoggedIn) {
+    next({ name: 'home' });
+    return;
+  }
+
+  next();
+});
 
 export default router;
