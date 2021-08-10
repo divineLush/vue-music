@@ -5,6 +5,7 @@ import firebase from 'firebase/app';
 // so it wont export another object
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCvdABlIh_X-B5xqfDNRiM-E-mzyT4sTt0',
@@ -21,7 +22,14 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const db = firebase.firestore();
+const storage = firebase.storage();
+
 // return an object with methods and properties for working with the user's collection
 const usersCollection = db.collection('users');
 
-export { auth, db, usersCollection };
+export {
+  auth,
+  db,
+  usersCollection,
+  storage,
+};
