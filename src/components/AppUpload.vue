@@ -21,22 +21,13 @@
         <h5>Drop your files here</h5>
       </div>
       <hr class="my-6" />
-      <div class="mb-4">
-        <div class="font-bold text-sm">Just another song.mp3</div>
+      <div class="mb-4" v-for="upload in uploads" :key="upload.name">
+        <div class="font-bold text-sm">{{ upload.name }}</div>
         <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-          <div class="transition-all progress-bar bg-blue-400" style="width: 75%"></div>
-        </div>
-      </div>
-      <div class="mb-4">
-        <div class="font-bold text-sm">Just another song.mp3</div>
-        <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-          <div class="transition-all progress-bar bg-blue-400" style="width: 35%"></div>
-        </div>
-      </div>
-      <div class="mb-4">
-        <div class="font-bold text-sm">Just another song.mp3</div>
-        <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-          <div class="transition-all progress-bar bg-blue-400" style="width: 55%"></div>
+          <div
+            class="transition-all progress-bar bg-blue-400"
+            :style="{ width: upload.currentProgress + '%' }"
+          ></div>
         </div>
       </div>
     </div>
@@ -52,6 +43,7 @@ export default {
   data() {
     return {
       isDragover: false,
+      uploads: [],
     };
   },
 
@@ -67,9 +59,9 @@ export default {
 
       const { files } = $event.dataTransfer;
       files.forEach((file) => {
-        if (file.type !== 'audio/mpeg') {
-          return;
-        }
+        // if (file.type !== 'audio/mpeg' || file.type !== 'audio/flac') {
+        //    return;
+        //  }
 
         // storage.ref() represents the path in our storage aka the bucket url
         // returns 'vue-music-53198.appspot.com' which is our root reference
@@ -78,7 +70,20 @@ export default {
         // returns `vue-music-53198.appspot.com/songs/${file.name}`
         const songsRef = storageRef.child(`/songs/${file.name}`);
         // initialize upload process
-        songsRef.put(file);
+        const task = songsRef.put(file);
+        const uploadIndex = this.uploads
+          .push({ task, currentProgress: 0, name: file.name }) - 1;
+        console.log(uploadIndex);
+
+        // listen to state_changed event
+        // state_changed lets us know the progress of the upload
+        // if the upload failed or if it succeded
+        task.on('state_changed', (snapshot) => {
+          // handle upload progress
+          // snapshot contains data about current upload
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          this.uploads[uploadIndex].currentProgress = progress;
+        });
       });
     },
   },
