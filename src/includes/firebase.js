@@ -26,10 +26,12 @@ const storage = firebase.storage();
 
 // return an object with methods and properties for working with the user's collection
 const usersCollection = db.collection('users');
+const songsCollection = db.collection('songs');
 
 export {
   auth,
   db,
   usersCollection,
+  songsCollection,
   storage,
 };
