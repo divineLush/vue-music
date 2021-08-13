@@ -22,10 +22,14 @@
       </div>
       <hr class="my-6" />
       <div class="mb-4" v-for="upload in uploads" :key="upload.name">
-        <div class="font-bold text-sm">{{ upload.name }}</div>
+        <div class="font-bold text-sm" :class="upload.textClass">
+          <i :class="upload.icon"></i>
+          {{ upload.name }}
+        </div>
         <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
           <div
-            class="transition-all progress-bar bg-blue-400"
+            class="transition-all progress-bar"
+            :class="upload.variant"
             :style="{ width: upload.currentProgress + '%' }"
           ></div>
         </div>
@@ -71,8 +75,18 @@ export default {
         const songsRef = storageRef.child(`/songs/${file.name}`);
         // initialize upload process
         const task = songsRef.put(file);
-        const uploadIndex = this.uploads
-          .push({ task, currentProgress: 0, name: file.name }) - 1;
+        const newUpload = {
+          task,
+          currentProgress: 0,
+          name: file.name,
+          // progress bar color
+          variant: 'bg-blue-400',
+          // icon to indicate the upload was a failure
+          icon: 'fas fa-spinner fa-spin',
+          // text color
+          textClass: '',
+        };
+        const uploadIndex = this.uploads.push(newUpload) - 1;
         console.log(uploadIndex);
 
         // listen to state_changed event
@@ -83,6 +97,18 @@ export default {
           // snapshot contains data about current upload
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           this.uploads[uploadIndex].currentProgress = progress;
+        }, (error) => {
+          // handle error
+          this.uploads[uploadIndex].variant = 'bg-red-400';
+          this.uploads[uploadIndex].icon = 'fas fa-times';
+          this.uploads[uploadIndex].textClass = 'text-red-400';
+          console.log(error);
+        }, (success) => {
+          // handle success
+          this.uploads[uploadIndex].variant = 'bg-green-400';
+          this.uploads[uploadIndex].icon = 'fas fa-check';
+          this.uploads[uploadIndex].textClass = 'text-green-400';
+          console.log(success);
         });
       });
     },
