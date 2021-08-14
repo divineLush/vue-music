@@ -137,5 +137,12 @@ export default {
       });
     },
   },
+
+  // navigating away from the page will cancel the upload
+  beforeUnmount() {
+    this.uploads.forEach((upload) => {
+      upload.task.cancel();
+    });
+  },
 };
 </script>
