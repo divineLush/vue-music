@@ -17,6 +17,7 @@
               :song="song"
               :index="index"
               :updateSong="updateSong"
+              :removeSong="removeSong"
             ></app-composition-item>
           </div>
         </div>
@@ -67,6 +68,9 @@ export default {
     updateSong(index, values) {
       this.songs[index].modifiedName = values.modifiedName;
       this.songs[index].genre = values.genre;
+    },
+    removeSong(index) {
+      this.songs.splice(index, 1);
     },
   },
 
