@@ -52,6 +52,13 @@ export default {
     };
   },
 
+  props: {
+    addSong: {
+      type: Function,
+      required: true,
+    },
+  },
+
   methods: {
     setDragOverTrue() {
       this.isDragover = true;
@@ -127,7 +134,10 @@ export default {
             commentCount: 0,
           };
 
-          await songsCollection.add(song);
+          const songRef = await songsCollection.add(song);
+          const songSnapshot = await songRef.get();
+
+          this.addSong(songSnapshot);
 
           this.uploads[uploadIndex].variant = 'bg-green-400';
           this.uploads[uploadIndex].icon = 'fas fa-check';

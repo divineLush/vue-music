@@ -2,7 +2,7 @@
   <section class="container mx-auto mt-6">
     <div class="md:grid md:grid-cols-3 md:gap-4">
       <div class="col-span-1">
-        <app-upload></app-upload>
+        <app-upload :addSong="addSong"></app-upload>
       </div>
       <div class="col-span-2">
         <div class="bg-white rounded border border-gray-200 relative flex flex-col">
@@ -56,12 +56,7 @@ export default {
       .where('uid', '==', auth.currentUser.uid)
       .get();
 
-    snapshot.forEach((document) => {
-      this.songs.push({
-        ...document.data(),
-        docID: document.id,
-      });
-    });
+    snapshot.forEach(this.addSong);
   },
 
   methods: {
@@ -71,6 +66,13 @@ export default {
     },
     removeSong(index) {
       this.songs.splice(index, 1);
+    },
+    addSong(document) {
+      // document gotta be a snapshot
+      this.songs.push({
+        ...document.data(),
+        docID: document.id,
+      });
     },
   },
 
