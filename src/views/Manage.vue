@@ -12,8 +12,11 @@
           </div>
           <div class="p-6">
             <app-composition-item
-              v-for="song in songs"
+              v-for="(song, index) in songs"
               :key="song.docID"
+              :song="song"
+              :index="index"
+              :updateSong="updateSong"
             ></app-composition-item>
           </div>
         </div>
@@ -55,9 +58,16 @@ export default {
     snapshot.forEach((document) => {
       this.songs.push({
         ...document.data(),
-        docID: document.ID,
+        docID: document.id,
       });
     });
+  },
+
+  methods: {
+    updateSong(index, values) {
+      this.songs[index].modifiedName = values.modifiedName;
+      this.songs[index].genre = values.genre;
+    },
   },
 
   // router runs this method before rendering the component
