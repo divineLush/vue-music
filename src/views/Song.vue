@@ -19,7 +19,7 @@
   <section class="container mx-auto mt-6">
     <div class="bg-white rounded border border-gray-200 relative flex flex-col">
       <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
-        <span class="card-title">Comments (15)</span>
+        <span class="card-title">{{ commentCount }}</span>
         <i class="fa fa-comments float-right text-green-400 text-2xl"></i>
       </div>
       <div class="p-6">
@@ -101,6 +101,9 @@ export default {
 
   computed: {
     ...mapState(['isUserLoggedIn']),
+    routeID() {
+      return this.$route.params.id;
+    },
     sortedComments() {
       return this.comments
         .slice()
@@ -111,12 +114,16 @@ export default {
           return this.sortOrder === '0' ? bDate - aDate : aDate - bDate;
         });
     },
+    commentCount() {
+      const count = typeof this.song.commentCount !== 'undefined'
+        ? this.song.commentCount : '';
+      return `Comments (${count})`;
+    },
   },
 
   async created() {
-    const songID = this.$route.params.id;
     const docSnapshot = await songsCollection
-      .doc(songID)
+      .doc(this.routeID)
       .get();
 
     if (!docSnapshot.exists) {
@@ -151,10 +158,17 @@ export default {
         name: displayName,
         content: comment,
         datePosted: new Date().toString(),
-        songID: this.$route.params.id,
+        songID: this.routeID,
       };
 
       await commentsCollection.add(commentToUpload);
+
+      this.song.commentCount += 1;
+      await songsCollection
+        .doc(this.routeID)
+        .update({
+          commentCount: this.song.commentCount,
+        });
 
       this.getComments();
 
@@ -167,7 +181,7 @@ export default {
     },
     async getComments() {
       const snapshots = await commentsCollection
-        .where('songID', '==', this.$route.params.id)
+        .where('songID', '==', this.routeID)
         .get();
 
       this.comments = [];
