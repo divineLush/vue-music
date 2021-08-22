@@ -100,7 +100,6 @@ export default {
           textClass: '',
         };
         const uploadIndex = this.uploads.push(newUpload) - 1;
-        console.log(uploadIndex);
 
         // listen to state_changed event
         // state_changed lets us know the progress of the upload

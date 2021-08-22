@@ -4,8 +4,11 @@
       style="background-image: url(/assets/img/song-header.png)">
     </div>
     <div class="container mx-auto flex items-center">
-      <button type="button" class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full
-        focus:outline-none">
+      <button
+        type="button"
+        class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
+        @click.prevent="newSong(song)"
+      >
         <i class="fas fa-play"></i>
       </button>
       <div class="z-50 text-left ml-8">
@@ -79,7 +82,7 @@
 
 <script>
 import { songsCollection, commentsCollection, auth } from '@/includes/firebase';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Song',
@@ -140,6 +143,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['newSong']),
     // (values, context)
     async submitComment({ comment }, { resetForm }) {
       if (!this.isUserLoggedIn) {
