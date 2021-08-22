@@ -12,6 +12,7 @@ export default createStore({
     // seek is a current position in Howler
     seek: '00:00',
     duration: '00:00',
+    playerProgress: '0%',
   },
   mutations: {
     toggleAuthModal(state) {
@@ -31,6 +32,9 @@ export default createStore({
     updatePosition(state) {
       state.seek = formatTime(state.sound.seek());
       state.duration = formatTime(state.sound.duration());
+
+      const progress = (state.sound.seek() / state.sound.duration()) * 100;
+      state.playerProgress = `${progress}%`;
     },
   },
   getters: {
@@ -82,6 +86,11 @@ export default createStore({
       commit('toggleAuth');
     },
     async newSong({ commit, state, dispatch }, payload) {
+      if (state.sound instanceof Howl) {
+        // destroy previous audio source
+        state.sound.unload();
+      }
+
       commit('newSong', payload);
 
       state.sound.play();

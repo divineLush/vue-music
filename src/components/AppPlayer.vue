@@ -19,19 +19,29 @@
       </div>
       <!-- Scrub -->
       <div class="float-left w-7 h-7 leading-3 ml-7 mt-2 player-scrub">
-        <div class="absolute left-0 right-0 text-lg text-center mx-auto player-song-info">
-          <span class="song-title">Song Title</span> by
-          <span class="song-artist">Artist</span>
+        <div
+          class="absolute left-0 right-0 text-lg text-center mx-auto player-song-info"
+          v-if="currentSong.modifiedName"
+        >
+          <span elass="song-title">{{ currentSong.modifiedName }}</span>
+          <span class="song-artist">
+            (Uploaded by {{ currentSong.displayName }})
+          </span>
         </div>
         <!-- Scrub Container  -->
         <span class="block w-full h-2 rounded m-1 mt-2 bg-gray-200 relative cursor-pointer">
           <!-- Player Ball -->
-          <span class="absolute top-neg-8 text-gray-800 text-lg" style="left: 50%;">
+          <span
+            class="absolute top-neg-8 text-gray-800 text-lg"
+            :style="{ left: playerProgress }"
+          >
             <i class="fas fa-circle"></i>
           </span>
           <!-- Player Progress Bar-->
-          <span class="block h-2 rounded bg-gradient-to-r from-green-500 to-green-400"
-            style="width: 50%;"></span>
+          <span
+            class="block h-2 rounded bg-gradient-to-r from-green-500 to-green-400"
+            :style="{ width: playerProgress }"
+          ></span>
         </span>
       </div>
       <!-- Duration -->
@@ -50,7 +60,7 @@ export default {
 
   computed: {
     ...mapGetters(['isPlaying']),
-    ...mapState(['seek', 'duration']),
+    ...mapState(['seek', 'duration', 'playerProgress', 'currentSong']),
     playIcon() {
       return this.isPlaying ? 'fa-pause' : 'fa-play';
     },
