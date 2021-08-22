@@ -127,5 +127,21 @@ export default createStore({
         });
       }
     },
+    updateSeek({ state, dispatch }, { currentTarget, clientX }) {
+      if (!state.sound.playing) {
+        return;
+      }
+
+      // x is a distance from the left side of the document to the left side of the player
+      const { x, width } = currentTarget.getBoundingClientRect();
+      const percentage = (clientX - x) / width;
+      const seconds = state.sound.duration() * percentage;
+
+      state.sound.seek(seconds);
+      // listen to seek event emitted when the audio has changed position
+      state.sound.once('seek', () => {
+        dispatch('progress');
+      });
+    },
   },
 });
