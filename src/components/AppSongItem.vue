@@ -11,9 +11,15 @@
       <span class="text-gray-500 text-sm">{{ song.displayName }}</span>
     </div>
     <div class="text-gray-600 text-lg">
-      <span class="comments">
-        <i class="fa fa-comments text-gray-600"></i>
-      </span>
+      <router-link
+        custom
+        :to="commentLink"
+        v-slot="{ navigate }"
+      >
+        <span class="comments" @click="navigate">
+          <i class="fa fa-comments text-gray-600"></i>
+        </span>
+      </router-link>
       {{ song.commentCount }}
     </div>
   </li>
@@ -37,6 +43,15 @@ export default {
         params: {
           id: this.song.docID,
         },
+      };
+    },
+    commentLink() {
+      return {
+        name: 'song',
+        params: {
+          id: this.song.docID,
+        },
+        hash: '#comments',
       };
     },
   },
