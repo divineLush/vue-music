@@ -1,9 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '@/views/Home.vue';
-import About from '@/views/About.vue';
-import Manage from '@/views/Manage.vue';
-import Song from '@/views/Song.vue';
 import store from '@/store/index';
+
+// .vue files will be made into webpack chunks automatically
+// reduces the bundle size
+const Home = () => import('@/views/Home.vue');
+const About = () => import('@/views/About.vue');
+const Manage = () => import('@/views/Manage.vue');
+const Song = () => import('@/views/Song.vue');
 
 const routes = [
   {
