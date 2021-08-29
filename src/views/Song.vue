@@ -127,22 +127,27 @@ export default {
     },
   },
 
-  async created() {
+  async beforeRouteEnter(to, from, next) {
     const docSnapshot = await songsCollection
-      .doc(this.routeID)
+      .doc(to.params.id)
       .get();
 
-    if (!docSnapshot.exists) {
-      this.$router.push({ name: 'home' });
-      return;
-    }
+    next((vm) => {
+      if (!docSnapshot.exists) {
+        vm.$router.push({ name: 'home' });
+        return;
+      }
 
-    const { sort } = this.$route.query;
-    const isParamValid = sort === '0' || sort === '1';
-    this.sortOrder = isParamValid ? sort : '0';
+      const { sort } = vm.$route.query;
+      const isParamValid = sort === '0' || sort === '1';
 
-    this.song = docSnapshot.data();
-    this.getComments();
+      // eslint-disable-next-line no-param-reassign
+      vm.sortOrder = isParamValid ? sort : '0';
+
+      // eslint-disable-next-line no-param-reassign
+      vm.song = docSnapshot.data();
+      vm.getComments();
+    });
   },
 
   methods: {
