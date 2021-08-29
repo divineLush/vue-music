@@ -51,6 +51,7 @@
       <div class="float-left w-7 h-7 leading-3 text-gray-400 mt-0 text-lg w-14 ml-8 mt-1">
         <span class="player-duration">{{ duration }}</span>
       </div>
+      <span>{{ progress }}</span>
     </div>
   </div>
 </template>
@@ -66,11 +67,14 @@ export default {
     ...mapState({
       seek: (state) => state.player.seek,
       duration: (state) => state.player.duration,
-      playerProgress: (state) => state.player.seek,
+      playerProgress: (state) => state.player.playerProgress,
       currentSong: (state) => state.player.currentSong,
     }),
     playIcon() {
       return this.isPlaying ? 'fa-pause' : 'fa-play';
+    },
+    progress() {
+      return this.playerProgress;
     },
   },
 
