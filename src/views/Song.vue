@@ -104,7 +104,9 @@ export default {
   },
 
   computed: {
-    ...mapState(['isUserLoggedIn']),
+    ...mapState({
+      isUserLoggedIn: (state) => state.auth.isUserLoggedIn,
+    }),
     routeID() {
       return this.$route.params.id;
     },

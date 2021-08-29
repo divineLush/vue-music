@@ -73,7 +73,7 @@ router.beforeEach((to, from, next) => {
   const isAuthRequired = to.matched
     .some((record) => record.meta.requiresAuth);
 
-  const isLoggedIn = store.state.isUserLoggedIn;
+  const isLoggedIn = store.state.auth.isUserLoggedIn;
 
   if (isAuthRequired && !isLoggedIn) {
     next({ name: 'home' });

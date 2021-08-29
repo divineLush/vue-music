@@ -92,7 +92,9 @@ export default {
   },
 
   computed: {
-    ...mapState(['isAuthModalVisible']),
+    ...mapState({
+      isAuthModalVisible: (state) => state.auth.isAuthModalVisible,
+    }),
     // using alias
     // ...mapState({ modal: 'isAuthModalVisible' }),
 

@@ -63,7 +63,12 @@ export default {
 
   computed: {
     ...mapGetters(['isPlaying']),
-    ...mapState(['seek', 'duration', 'playerProgress', 'currentSong']),
+    ...mapState({
+      seek: (state) => state.player.seek,
+      duration: (state) => state.player.duration,
+      playerProgress: (state) => state.player.seek,
+      currentSong: (state) => state.player.currentSong,
+    }),
     playIcon() {
       return this.isPlaying ? 'fa-pause' : 'fa-play';
     },

@@ -50,7 +50,9 @@ import { mapMutations, mapState } from 'vuex';
 export default {
   name: 'AppHeader',
 
-  computed: mapState(['isUserLoggedIn']),
+  computed: mapState({
+    isUserLoggedIn: (state) => state.auth.isUserLoggedIn,
+  }),
 
   methods: {
     ...mapMutations(['toggleAuthModal']),
