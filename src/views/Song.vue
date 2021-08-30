@@ -7,6 +7,7 @@
       <button
         type="button"
         class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
+        id="play-button"
         @click.prevent="newSong(song)"
       >
         <i class="fas fa-play"></i>

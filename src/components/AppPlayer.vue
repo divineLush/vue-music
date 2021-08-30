@@ -6,6 +6,7 @@
         <button
           type="button"
           @click.prevent="toggleAudio"
+          id="player-play-button"
         >
           <i
             class="fa text-gray-500 text-xl"
